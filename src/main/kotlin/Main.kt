@@ -1,3 +1,3 @@
 fun main(args: Array<String>) {
-    Window(900, 600)
+    Game(900, 600).start()
 }
