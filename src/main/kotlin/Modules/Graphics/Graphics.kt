@@ -4,13 +4,13 @@ import java.awt.Color
 import java.awt.image.BufferedImage
 import kotlin.math.roundToInt
 
-class Graphics(val buffer: BufferedImage) {
+open class Graphics(val buffer: BufferedImage) {
 
-    fun drawPoint(x: Int, y: Int, color: Color = Color.black) {
+    open fun drawPoint(x: Int, y: Int, color: Color = Color.black) {
         drawPixel(x, y, color)
     }
 
-    fun drawLine(startX: Int, startY: Int, endX: Int, endY: Int, color: Color = Color.black) {
+    open fun drawLine(startX: Int, startY: Int, endX: Int, endY: Int, color: Color = Color.black) {
         var startX = startX
         var startY = startY
         var endX = endX
@@ -52,16 +52,11 @@ class Graphics(val buffer: BufferedImage) {
         }
     }
 
-
-    fun randomBackground() {
-        for (j in 0 until buffer.height) {
-            for (i in 0 until buffer.width) {
-                val r = (Math.random() * 255).toInt()
-                val g = (Math.random() * 255).toInt()
-                val b = (Math.random() * 255).toInt()
-                buffer.setRGB(i, j, Color(r,g,b).rgb)
-            }
-        }
+    open fun drawRect(startX: Int, startY: Int, endX: Int, endY: Int, color: Color = Color.black) {
+        drawLine(startX, startY, endX, startY, color)
+        drawLine(endX, startY, endX, endY, color)
+        drawLine(startX, endY, endX, endY, color)
+        drawLine(startX, startY, startX, endY, color)
     }
 
     protected fun drawPixel(x: Int, y: Int, color: Color) {

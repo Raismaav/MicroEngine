@@ -5,9 +5,8 @@ import java.awt.Canvas
 import java.awt.Color
 import javax.swing.JFrame
 import javax.swing.JLabel
-import javax.swing.JPanel
 
-class Window (widht: Int, height: Int): JFrame() {
+class Window (width: Int, height: Int): JFrame() {
     val fpsCounter: JLabel
     val canvas: Canvas
 
@@ -15,11 +14,11 @@ class Window (widht: Int, height: Int): JFrame() {
         title = "MicroEngine"
         layout = null
         isResizable = false
-        setSize(widht, height)
+        setSize(width, height)
         setLocationRelativeTo(null)
 
         canvas = Canvas()
-        canvas.setBounds(0, 0, widht, height)
+        canvas.setBounds(0, 0, width, height)
 
         fpsCounter = JLabel("fps counter")
         fpsCounter.setBounds(0, 0, 100, 20)

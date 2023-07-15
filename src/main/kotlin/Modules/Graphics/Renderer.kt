@@ -4,7 +4,7 @@ import java.awt.Canvas
 import java.awt.Color
 import java.awt.image.BufferedImage
 
-class Renderer(val canvas: Canvas, colorBackground: Color = Color(238, 238, 238)) {
+class Renderer(val canvas: Canvas, val colorBackground: Color = Color(238, 238, 238)) {
     val buffer: BufferedImage
 
     init {
@@ -14,15 +14,24 @@ class Renderer(val canvas: Canvas, colorBackground: Color = Color(238, 238, 238)
                 buffer.setRGB(i, j, colorBackground.rgb)
             }
         }
-        draw()
+        drawFigures()
     }
 
-    fun draw(figures: () -> Unit) {
+    fun drawFigures(figures: () -> Unit) {
+        repaintBackground()
         figures()
         canvas.graphics.drawImage(buffer, 0, 0, canvas)
     }
 
-    private fun draw() {
+    fun drawFigures() {
         canvas.graphics.drawImage(buffer, 0, 0, canvas)
+    }
+
+    private fun repaintBackground() {
+        for (j in 0 until buffer.height) {
+            for (i in 0 until buffer.width) {
+                buffer.setRGB(i, j, colorBackground.getRGB())
+            }
+        }
     }
 }

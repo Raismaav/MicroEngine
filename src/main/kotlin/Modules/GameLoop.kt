@@ -3,22 +3,19 @@ package Modules
 import Modules.Graphics.Renderer
 
 open class GameLoop(widht: Int, height: Int): Thread() {
-    private val time: Time
-
     protected val window: Window
     protected val renderer: Renderer
     protected var debugMode = false
+    protected val time: Time
 
     init {
         window = Window(widht, height)
         renderer = Renderer(window.canvas)
-        renderer.draw(){
-
-        }
+        renderer.drawFigures()
         time = Time()
     }
 
-     protected open fun update() {
+    protected open fun update() {
 
     }
 
@@ -28,11 +25,20 @@ open class GameLoop(widht: Int, height: Int): Thread() {
     }
 
     override fun run() {
+        var ticks = 0
+
+        debugMode()
+
         while (true) {
-            time.updateDeltaTime()
+            ticks++
+            time.previousTime = System.currentTimeMillis()
             update()
-            debugMode()
-            sleep(5)
+            if (ticks % 5 == 0) {
+                debugMode()
+                ticks = 0
+            }
+            sleep(1)
+            time.updateDeltaTime()
         }
     }
 }
