@@ -3,10 +3,9 @@ package Modules.Figures
 import Modules.Graphics.Graphics
 import java.awt.Color
 import java.awt.image.BufferedImage
-import java.util.*
 import kotlin.math.roundToInt
 
-class Sprites(val width: Int = 16, val height: Int = 16, buffer: BufferedImage): Graphics(buffer) {
+class Sprite(val width: Int = 16, val height: Int = 16, buffer: BufferedImage): Graphics(buffer) {
     val sprite: Array<DoubleArray>
     val colors: IntArray
     val spriteBuffer: BufferedImage
@@ -38,18 +37,24 @@ class Sprites(val width: Int = 16, val height: Int = 16, buffer: BufferedImage):
         }
     }
 
-    fun translation(dx: Double, dy: Double) {
+    fun translation(dx: Double = 0.0, dy: Double = 0.0) {
         val identityMatrix = arrayOf(
             doubleArrayOf(1.0, 0.0, dx),
             doubleArrayOf(0.0, 1.0, dy),
             doubleArrayOf(0.0, 0.0, 1.0)
         )
+        val finalSprite = Array(3) {
+            DoubleArray(width * height)
+        }
         for (i in identityMatrix.indices) {
             for (j in sprite[0].indices) {
                 for (k in identityMatrix[0].indices) {
-                    sprite[i][j] += identityMatrix[i][k] * sprite[k][j]
+                    finalSprite[i][j] += identityMatrix[i][k] * sprite[k][j]
                 }
             }
+        }
+        for (j in finalSprite.indices) {
+            sprite[j] = finalSprite[j].clone()
         }
     }
 }

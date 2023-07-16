@@ -23,7 +23,7 @@ class Renderer(val canvas: Canvas, val colorBackground: Color = Color(238, 238, 
         canvas.graphics.drawImage(buffer, 0, 0, canvas)
     }
 
-    fun drawFigures() {
+    private fun drawFigures() {
         canvas.graphics.drawImage(buffer, 0, 0, canvas)
     }
 

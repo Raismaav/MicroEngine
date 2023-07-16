@@ -1,17 +1,20 @@
 package Modules
 
 import Modules.Graphics.Renderer
+import java.awt.image.BufferedImage
 
 open class GameLoop(widht: Int, height: Int): Thread() {
-    protected val window: Window
-    protected val renderer: Renderer
+    protected val buffer: BufferedImage
     protected var debugMode = false
     protected val time: Time
+
+    private val window: Window
+    private val renderer: Renderer
 
     init {
         window = Window(widht, height)
         renderer = Renderer(window.canvas)
-        renderer.drawFigures()
+        buffer = renderer.buffer
         time = Time()
     }
 
@@ -26,19 +29,14 @@ open class GameLoop(widht: Int, height: Int): Thread() {
 
     override fun run() {
         var ticks = 0
-
-        debugMode()
-
         while (true) {
-            ticks++
             time.previousTime = System.currentTimeMillis()
-            update()
-            if (ticks % 5 == 0) {
-                debugMode()
-                ticks = 0
+            renderer.drawFigures {
+                update()
             }
-            sleep(1)
+            if (ticks % 10 == 0) debugMode()
             time.updateDeltaTime()
+            ticks++
         }
     }
 }

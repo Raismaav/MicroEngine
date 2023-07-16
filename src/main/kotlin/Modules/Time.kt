@@ -12,7 +12,6 @@ class Time() {
     }
     fun updateDeltaTime() {
         deltaTime = (System.currentTimeMillis() - previousTime).toDouble() / 1000
-        println(deltaTime)
         fpsCounter = (1 / deltaTime).roundToLong()
     }
 }
