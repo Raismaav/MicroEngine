@@ -57,4 +57,34 @@ class Sprite(val width: Int = 16, val height: Int = 16, buffer: BufferedImage): 
             sprite[j] = finalSprite[j].clone()
         }
     }
+
+    fun rotation(angle: Double = 0.0) {
+        val radiansAngle = Math.toRadians(angle)
+        val identityMatrix = arrayOf(
+            doubleArrayOf(Math.cos(radiansAngle), -Math.sin(radiansAngle), 0.0),
+            doubleArrayOf(Math.sin(radiansAngle), Math.cos(radiansAngle), 0.0),
+            doubleArrayOf(0.0, 0.0, 1.0)
+        )
+        val finalSprite = Array(3) {
+            DoubleArray(width * height)
+        }
+        for (i in sprite[0].indices) {
+            sprite[0][i] -= width.toDouble() / 2
+            sprite[1][i] -= height.toDouble() / 2
+        }
+        for (i in identityMatrix.indices) {
+            for (j in sprite.get(0).indices) {
+                for (k in identityMatrix[0].indices) {
+                    finalSprite[i][j] += identityMatrix[i][k] * sprite[k][j]
+                }
+            }
+        }
+        for (j in finalSprite.indices) {
+            sprite[j] = finalSprite[j].clone()
+        }
+        for (i in sprite[0].indices) {
+            sprite[0][i] += width.toDouble() / 2
+            sprite[1][i] += height.toDouble() / 2
+        }
+    }
 }
