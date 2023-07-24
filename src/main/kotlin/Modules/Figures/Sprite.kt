@@ -1,14 +1,14 @@
 package Modules.Figures
 
-import Modules.Graphics.Graphics
 import java.awt.Color
 import java.awt.image.BufferedImage
 import kotlin.math.roundToInt
 
-class Sprite(val width: Int = 16, val height: Int = 16, buffer: BufferedImage): Graphics(buffer) {
+class Sprite(val width: Int = 16, val height: Int = 16, val buffer: BufferedImage) {
     val sprite: Array<DoubleArray>
     val colors: IntArray
     val spriteBuffer: BufferedImage
+    var centerFigure = DoubleArray(2)
 
     init {
         spriteBuffer = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
@@ -59,6 +59,8 @@ class Sprite(val width: Int = 16, val height: Int = 16, buffer: BufferedImage): 
     }
 
     fun rotation(angle: Double = 0.0) {
+        val centerX = (sprite[0].max() + sprite[0].min()) / 2
+        val centerY = (sprite[1].max() + sprite[1].min()) / 2
         val radiansAngle = Math.toRadians(angle)
         val identityMatrix = arrayOf(
             doubleArrayOf(Math.cos(radiansAngle), -Math.sin(radiansAngle), 0.0),
@@ -68,9 +70,10 @@ class Sprite(val width: Int = 16, val height: Int = 16, buffer: BufferedImage): 
         val finalSprite = Array(3) {
             DoubleArray(width * height)
         }
+
         for (i in sprite[0].indices) {
-            sprite[0][i] -= width.toDouble() / 2
-            sprite[1][i] -= height.toDouble() / 2
+            sprite[0][i] -= centerX
+            sprite[1][i] -= centerY
         }
         for (i in identityMatrix.indices) {
             for (j in sprite.get(0).indices) {
@@ -83,8 +86,14 @@ class Sprite(val width: Int = 16, val height: Int = 16, buffer: BufferedImage): 
             sprite[j] = finalSprite[j].clone()
         }
         for (i in sprite[0].indices) {
-            sprite[0][i] += width.toDouble() / 2
-            sprite[1][i] += height.toDouble() / 2
+            sprite[0][i] += centerX
+            sprite[1][i] += centerY
+        }
+    }
+
+    private fun drawPixel(x: Int, y: Int, color: Color) {
+        if (x >= 0 && x < buffer.width && y >= 0 && y < buffer.height) {
+            buffer.setRGB(x, y, color.rgb)
         }
     }
 }

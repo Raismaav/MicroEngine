@@ -1,5 +1,6 @@
 package Modules
 
+import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 class Time() {
